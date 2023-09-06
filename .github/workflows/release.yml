@@ -15,12 +15,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repository
-        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
+        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac
         with:
           fetch-depth: 0
+      - name: Build  ipamwrapper
+        run: |
+            go mod tidy
+            git diff --exit-code
+            make images
+            
+      - name: Login to Docker
+        run: |
+           docker login -u inspurwyd  -p  dckr_pat_yMRt21vCZj0PlDl14xJiqSOHeVg
 
-      - name: Build and release new images
-        uses: submariner-io/shipyard/gh-actions/release-images@release-0.15
-        with:
-          username: ${{ secrets.QUAY_USERNAME }}
-          password: ${{ secrets.QUAY_PASSWORD }}
+      - name: Push
+        run: |
+          docker tag  quay.io/submariner/lighthouse-agent:release-0.15  inspurwyd/lighthouse-agent:release-0.15
+          docker push  inspurwyd/lighthouse-agent:release-0.15
