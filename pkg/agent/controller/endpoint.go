@@ -23,7 +23,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
-	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/submariner-io/admiral/pkg/federate"
@@ -41,41 +40,10 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/dynamic"
-	"k8s.io/client-go/kubernetes"
 	utilnet "k8s.io/utils/net"
 	"k8s.io/utils/pointer"
 	mcsv1a1 "sigs.k8s.io/mcs-api/pkg/apis/v1alpha1"
 )
-
-func CheckK8sVersion(k8sclient kubernetes.Interface) (bool, error) {
-	failedRequirements := []string{}
-
-	serverVersion, err := k8sclient.Discovery().ServerVersion()
-	if err != nil {
-		return false, errors.WithMessage(err, "error obtaining API server version")
-	}
-
-	var minor int
-	if strings.HasSuffix(serverVersion.Minor, "+") {
-		minor, err = strconv.Atoi(serverVersion.Minor[0 : len(serverVersion.Minor)-1])
-	} else {
-		minor, err = strconv.Atoi(serverVersion.Minor)
-	}
-
-	if err != nil {
-		return false,
-			errors.WithMessagef(err, "error parsing API server minor version %v", serverVersion.Minor)
-	}
-
-	if minor < 21 {
-		failedRequirements = append(failedRequirements,
-			fmt.Sprintf("endpointSlice requires Kubernetes %d.%d; your cluster is running %s.%s",
-				1, 21, serverVersion.Major, serverVersion.Minor))
-		return false, nil
-	}
-
-	return true, nil
-}
 
 func startEndpointController(localClient dynamic.Interface, restMapper meta.RESTMapper, scheme *runtime.Scheme,
 	serviceImport *mcsv1a1.ServiceImport, clusterID string, globalIngressIPCache *globalIngressIPCache,
@@ -194,50 +162,21 @@ func (e *EndpointController) endpointsToEndpointSlice(obj runtime.Object, numReq
 func (e *EndpointController) endpointSliceFromEndpoints(endpoints *corev1.Endpoints, op syncer.Operation) (
 	runtime.Object, bool,
 ) {
-	//todo
-	var endpointSlice *discovery.EndpointSlice
-	resourceClient := e.localClient.Resource(schema.GroupVersionResource{
-		Group:    discovery.SchemeGroupVersion.Group,
-		Version:  discovery.SchemeGroupVersion.Version,
-		Resource: "endpointslices",
-	})
-	_, err := resourceClient.List(context.Background(), metav1.ListOptions{})
-	if err != nil {
-		endpointSlice = &discovery.EndpointSlice{
-			ObjectMeta: metav1.ObjectMeta{
-				Name: e.endpointSliceNameFrom(endpoints),
-				Labels: map[string]string{
-					discovery.LabelManagedBy:        constants.LabelValueManagedBy,
-					constants.LabelSourceNamespace:  e.serviceNamespace,
-					constants.MCSLabelSourceCluster: e.clusterID,
-					mcsv1a1.LabelServiceName:        e.serviceName,
-					constants.LabelIsHeadless:       strconv.FormatBool(e.isHeadless()),
-				},
-				Annotations: map[string]string{
-					constants.PublishNotReadyAddresses: e.publishNotReadyAddresses,
-				},
+	endpointSlice := &discovery.EndpointSlice{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: e.endpointSliceNameFrom(endpoints),
+			Labels: map[string]string{
+				discovery.LabelManagedBy:        constants.LabelValueManagedBy,
+				constants.LabelSourceNamespace:  e.serviceNamespace,
+				constants.MCSLabelSourceCluster: e.clusterID,
+				mcsv1a1.LabelServiceName:        e.serviceName,
+				constants.LabelIsHeadless:       strconv.FormatBool(e.isHeadless()),
 			},
-			AddressType: discovery.AddressTypeIPv4,
-		}
-		endpointSlice.APIVersion = "v1beta1"
-	} else {
-		endpointSlice = &discovery.EndpointSlice{
-			ObjectMeta: metav1.ObjectMeta{
-				Name: e.endpointSliceNameFrom(endpoints),
-				Labels: map[string]string{
-					discovery.LabelManagedBy:        constants.LabelValueManagedBy,
-					constants.LabelSourceNamespace:  e.serviceNamespace,
-					constants.MCSLabelSourceCluster: e.clusterID,
-					mcsv1a1.LabelServiceName:        e.serviceName,
-					constants.LabelIsHeadless:       strconv.FormatBool(e.isHeadless()),
-				},
-				Annotations: map[string]string{
-					constants.PublishNotReadyAddresses: e.publishNotReadyAddresses,
-				},
+			Annotations: map[string]string{
+				constants.PublishNotReadyAddresses: e.publishNotReadyAddresses,
 			},
-			AddressType: discovery.AddressTypeIPv4,
-		}
-		endpointSlice.APIVersion = "v1"
+		},
+		AddressType: discovery.AddressTypeIPv4,
 	}
 
 	readyCount := 0

@@ -21,7 +21,6 @@ package controller
 import (
 	"context"
 	"fmt"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -52,12 +51,27 @@ func newEndpointSliceController(spec *AgentSpecification, syncerConfig broker.Sy
 
 	syncerConfig.LocalNamespace = metav1.NamespaceAll
 	syncerConfig.LocalClusterID = spec.ClusterID
+	syncerConfig.ResourceConfigs = []broker.ResourceConfig{
+		{
+			LocalSourceNamespace: metav1.NamespaceAll,
+			LocalSourceLabelSelector: k8slabels.SelectorFromSet(map[string]string{
+				discovery.LabelManagedBy: constants.LabelValueManagedBy,
+			}).String(),
+			LocalResourceType:     &discovery.EndpointSlice{},
+			LocalTransform:        c.onLocalEndpointSlice,
+			LocalOnSuccessfulSync: c.onLocalEndpointSliceSynced,
+			BrokerResourceType:    &discovery.EndpointSlice{},
+			BrokerTransform:       c.onRemoteEndpointSlice,
+			BrokerOnSuccessfulSync: func(obj runtime.Object, _ syncer.Operation) bool {
+				c.enqueueForConflictCheck(obj.(*discovery.EndpointSlice))
+				return false
+			},
+		},
+	}
 
-	_, err := syncerConfig.BrokerClient.Resource(schema.GroupVersionResource{
-		Group:    discovery.SchemeGroupVersion.Group,
-		Version:  discovery.SchemeGroupVersion.Version,
-		Resource: "endpointslices",
-	}).List(context.Background(), metav1.ListOptions{})
+	var err error
+
+	c.syncer, err = broker.NewSyncer(syncerConfig)
 	if err != nil {
 		syncerConfig.ResourceConfigs = []broker.ResourceConfig{
 			{
@@ -76,31 +90,10 @@ func newEndpointSliceController(spec *AgentSpecification, syncerConfig broker.Sy
 				},
 			},
 		}
-	} else {
-		syncerConfig.ResourceConfigs = []broker.ResourceConfig{
-			{
-				LocalSourceNamespace: metav1.NamespaceAll,
-				LocalSourceLabelSelector: k8slabels.SelectorFromSet(map[string]string{
-					discovery.LabelManagedBy: constants.LabelValueManagedBy,
-				}).String(),
-				LocalResourceType:     &discovery.EndpointSlice{},
-				LocalTransform:        c.onLocalEndpointSlice,
-				LocalOnSuccessfulSync: c.onLocalEndpointSliceSynced,
-				BrokerResourceType:    &discovery.EndpointSlice{},
-				BrokerTransform:       c.onRemoteEndpointSlice,
-				BrokerOnSuccessfulSync: func(obj runtime.Object, _ syncer.Operation) bool {
-					c.enqueueForConflictCheck(obj.(*discovery.EndpointSlice))
-					return false
-				},
-			},
+		c.syncer, err = broker.NewSyncer(syncerConfig)
+		if err != nil {
+			return nil, errors.Wrap(err, "error creating EndpointSlice syncer")
 		}
-	}
-
-	//var err error
-
-	c.syncer, err = broker.NewSyncer(syncerConfig)
-	if err != nil {
-		return nil, errors.Wrap(err, "error creating EndpointSlice syncer")
 	}
 
 	c.serviceImportAggregator = newServiceImportAggregator(c.syncer.GetBrokerClient(), c.syncer.GetBrokerNamespace(),
