@@ -32,5 +32,3 @@ jobs:
         run: |
           docker tag  quay.io/submariner/lighthouse-agent:release-0.15  inspurwyd/lighthouse-agent:release-0.15
           docker push  inspurwyd/lighthouse-agent:release-0.15
-
-
