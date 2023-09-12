@@ -21,6 +21,7 @@ package controller
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/submariner-io/admiral/pkg/log"
@@ -80,6 +81,24 @@ func (a *ServiceImportAggregator) setServicePorts(si *mcsv1a1.ServiceImport) err
 			mcsv1a1.LabelServiceName:       serviceName,
 		}).String(),
 	})
+
+	if err != nil && !strings.Contains(err.Error(), ErrResourceNotsupported) {
+		return errors.Wrapf(err, "error listing the EndpointSlices associated with service %s/%s",
+			serviceNamespace, serviceName)
+	} else {
+		list, err = a.brokerClient.Resource(endpointSliceV1Beta1GVR).Namespace(a.brokerNamespace).List(context.Background(), metav1.ListOptions{
+			LabelSelector: labels.SelectorFromSet(map[string]string{
+				discovery.LabelManagedBy:       constants.LabelValueManagedBy,
+				constants.LabelSourceNamespace: serviceNamespace,
+				mcsv1a1.LabelServiceName:       serviceName,
+			}).String(),
+		})
+		if err != nil {
+			return errors.Wrapf(err, "error listing the EndpointSlices associated with service %s/%s",
+				serviceNamespace, serviceName)
+		}
+	}
+
 	if err != nil {
 		return errors.Wrapf(err, "error listing the EndpointSlices associated with service %s/%s",
 			serviceNamespace, serviceName)

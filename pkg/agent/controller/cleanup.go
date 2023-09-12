@@ -46,6 +46,13 @@ var (
 		Version:  discovery.SchemeGroupVersion.Version,
 		Resource: "endpointslices",
 	}
+
+    SchemeGroupVersionV1beta1 = schema.GroupVersion{Group: discovery.GroupName, Version: "v1beta1"}
+	endpointSliceV1Beta1GVR = schema.GroupVersionResource{
+			Group:    discovery.GroupName,
+			Version:  SchemeGroupVersionV1beta1.Version,
+			Resource: "endpointslices",
+		}
 )
 
 func (a *Controller) Cleanup() error {

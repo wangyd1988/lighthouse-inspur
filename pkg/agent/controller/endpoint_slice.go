@@ -39,6 +39,8 @@ import (
 	mcsv1a1 "sigs.k8s.io/mcs-api/pkg/apis/v1alpha1"
 )
 
+var ErrResourceNotsupported = "could not find the requested resource"
+
 //nolint:gocritic // (hugeParam) This function modifies syncerConf so we don't want to pass by pointer.
 func newEndpointSliceController(spec *AgentSpecification, syncerConfig broker.SyncerConfig,
 	serviceExportClient *ServiceExportClient,
@@ -177,14 +179,26 @@ func (c *EndpointSliceController) onLocalEndpointSliceSynced(obj runtime.Object,
 }
 
 func (c *EndpointSliceController) checkForConflicts(key, name, namespace string) (bool, error) {
+
 	epsList, err := c.syncer.GetLocalClient().Resource(endpointSliceGVR).Namespace(namespace).List(context.Background(), metav1.ListOptions{
 		LabelSelector: k8slabels.SelectorFromSet(map[string]string{
 			discovery.LabelManagedBy: constants.LabelValueManagedBy,
 			mcsv1a1.LabelServiceName: name,
 		}).String(),
 	})
-	if err != nil {
+
+	if err != nil && !strings.Contains(err.Error(), ErrResourceNotsupported) {
 		return true, errors.Wrapf(err, "error during conflict check for %q", key)
+	} else {
+		epsList, err = c.syncer.GetLocalClient().Resource(endpointSliceV1Beta1GVR).Namespace(namespace).List(context.Background(), metav1.ListOptions{
+			LabelSelector: k8slabels.SelectorFromSet(map[string]string{
+				discovery.LabelManagedBy: constants.LabelValueManagedBy,
+				mcsv1a1.LabelServiceName: name,
+			}).String(),
+		})
+		if err != nil {
+			return true, errors.Wrapf(err, "error during conflict check for %q", key)
+		}
 	}
 
 	var prevServicePorts []mcsv1a1.ServicePort
