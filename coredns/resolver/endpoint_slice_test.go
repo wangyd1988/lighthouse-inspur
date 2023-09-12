@@ -21,7 +21,7 @@ package resolver_test
 import (
 	. "github.com/onsi/ginkgo/v2"
 	"github.com/wangyd1988/admiral-inspur/pkg/syncer/test"
-	"github.com/submariner-io/lighthouse/coredns/constants"
+	"github.com/wangyd1988/lighthouse-inspur/coredns/constants"
 	discovery "k8s.io/api/discovery/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	mcsv1a1 "sigs.k8s.io/mcs-api/pkg/apis/v1alpha1"

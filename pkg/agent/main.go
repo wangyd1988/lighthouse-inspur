@@ -33,7 +33,7 @@ import (
 	"github.com/wangyd1988/admiral-inspur/pkg/log/kzerolog"
 	"github.com/wangyd1988/admiral-inspur/pkg/syncer/broker"
 	"github.com/wangyd1988/admiral-inspur/pkg/util"
-	"github.com/submariner-io/lighthouse/pkg/agent/controller"
+	"github.com/wangyd1988/lighthouse-inspur/pkg/agent/controller"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/tools/clientcmd"

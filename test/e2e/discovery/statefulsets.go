@@ -23,8 +23,8 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/submariner-io/lighthouse/pkg/constants"
-	lhframework "github.com/submariner-io/lighthouse/test/e2e/framework"
+	"github.com/wangyd1988/lighthouse-inspur/pkg/constants"
+	lhframework "github.com/wangyd1988/lighthouse-inspur/test/e2e/framework"
 	"github.com/submariner-io/shipyard/test/e2e/framework"
 	corev1 "k8s.io/api/core/v1"
 	discovery "k8s.io/api/discovery/v1"

@@ -26,7 +26,7 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/wangyd1988/admiral-inspur/pkg/syncer/test"
 	testutil "github.com/wangyd1988/admiral-inspur/pkg/test"
-	"github.com/submariner-io/lighthouse/pkg/constants"
+	"github.com/wangyd1988/lighthouse-inspur/pkg/constants"
 	corev1 "k8s.io/api/core/v1"
 	discovery "k8s.io/api/discovery/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

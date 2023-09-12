@@ -61,7 +61,7 @@ import (
 	_ "github.com/coredns/coredns/plugin/tls"
 	_ "github.com/coredns/coredns/plugin/trace"
 	_ "github.com/coredns/coredns/plugin/whoami"
-	lighthouse "github.com/submariner-io/lighthouse/coredns/plugin"
+	lighthouse "github.com/wangyd1988/lighthouse-inspur/coredns/plugin"
 )
 
 var directives = []string{

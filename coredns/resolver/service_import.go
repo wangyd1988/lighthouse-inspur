@@ -19,7 +19,7 @@ limitations under the License.
 package resolver
 
 import (
-	"github.com/submariner-io/lighthouse/coredns/loadbalancer"
+	"github.com/wangyd1988/lighthouse-inspur/coredns/loadbalancer"
 	mcsv1a1 "sigs.k8s.io/mcs-api/pkg/apis/v1alpha1"
 )
 

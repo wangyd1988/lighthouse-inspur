@@ -20,7 +20,7 @@ package e2e_test
 import (
 	"testing"
 
-	_ "github.com/submariner-io/lighthouse/test/e2e/discovery"
+	_ "github.com/wangyd1988/lighthouse-inspur/test/e2e/discovery"
 	"github.com/submariner-io/shipyard/test/e2e"
 )
 

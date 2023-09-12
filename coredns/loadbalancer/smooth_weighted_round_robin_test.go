@@ -26,7 +26,7 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/submariner-io/lighthouse/coredns/loadbalancer"
+	"github.com/wangyd1988/lighthouse-inspur/coredns/loadbalancer"
 )
 
 type server struct {

@@ -26,7 +26,7 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/wangyd1988/admiral-inspur/pkg/fake"
 	"github.com/wangyd1988/admiral-inspur/pkg/log/kzerolog"
-	"github.com/submariner-io/lighthouse/coredns/gateway"
+	"github.com/wangyd1988/lighthouse-inspur/coredns/gateway"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

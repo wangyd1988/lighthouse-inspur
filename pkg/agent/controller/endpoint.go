@@ -28,7 +28,7 @@ import (
 	"github.com/wangyd1988/admiral-inspur/pkg/federate"
 	"github.com/wangyd1988/admiral-inspur/pkg/log"
 	"github.com/wangyd1988/admiral-inspur/pkg/syncer"
-	"github.com/submariner-io/lighthouse/pkg/constants"
+	"github.com/wangyd1988/lighthouse-inspur/pkg/constants"
 	corev1 "k8s.io/api/core/v1"
 	discovery "k8s.io/api/discovery/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"

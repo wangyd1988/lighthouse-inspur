@@ -24,7 +24,7 @@ import (
 
 	"github.com/coredns/coredns/request"
 	"github.com/miekg/dns"
-	"github.com/submariner-io/lighthouse/coredns/resolver"
+	"github.com/wangyd1988/lighthouse-inspur/coredns/resolver"
 	"sigs.k8s.io/mcs-api/pkg/apis/v1alpha1"
 )
 

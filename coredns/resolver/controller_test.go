@@ -24,7 +24,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/wangyd1988/admiral-inspur/pkg/syncer/test"
-	"github.com/submariner-io/lighthouse/coredns/resolver"
+	"github.com/wangyd1988/lighthouse-inspur/coredns/resolver"
 	discovery "k8s.io/api/discovery/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/utils/pointer"

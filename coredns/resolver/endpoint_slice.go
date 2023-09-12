@@ -24,7 +24,7 @@ import (
 	"strconv"
 
 	"github.com/wangyd1988/admiral-inspur/pkg/log"
-	"github.com/submariner-io/lighthouse/coredns/constants"
+	"github.com/wangyd1988/lighthouse-inspur/coredns/constants"
 	discovery "k8s.io/api/discovery/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"

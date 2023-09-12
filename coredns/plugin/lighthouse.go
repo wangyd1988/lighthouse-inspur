@@ -25,7 +25,7 @@ import (
 	"github.com/coredns/coredns/plugin/pkg/fall"
 	clog "github.com/coredns/coredns/plugin/pkg/log"
 	"github.com/go-logr/logr"
-	"github.com/submariner-io/lighthouse/coredns/resolver"
+	"github.com/wangyd1988/lighthouse-inspur/coredns/resolver"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 )
 

@@ -32,7 +32,7 @@ import (
 	"github.com/wangyd1988/admiral-inspur/pkg/syncer/broker"
 	"github.com/wangyd1988/admiral-inspur/pkg/util"
 	"github.com/wangyd1988/admiral-inspur/pkg/watcher"
-	"github.com/submariner-io/lighthouse/pkg/constants"
+	"github.com/wangyd1988/lighthouse-inspur/pkg/constants"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
