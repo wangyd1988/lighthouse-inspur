@@ -1,4 +1,4 @@
-module github.com/submariner-io/lighthouse/coredns
+module github.com/wangyd1988/lighthouse-inspur/coredns
 
 go 1.18
 

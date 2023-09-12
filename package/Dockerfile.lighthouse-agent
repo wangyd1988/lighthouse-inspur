@@ -1,5 +1,5 @@
 ARG BASE_BRANCH
-ARG SOURCE=/go/src/github.com/submariner-io/lighthouse
+ARG SOURCE=/go/src/github.com/wangyd1988/lighthouse-inspur
 
 FROM --platform=${BUILDPLATFORM} quay.io/submariner/shipyard-dapper-base:${BASE_BRANCH} AS builder
 ARG SOURCE

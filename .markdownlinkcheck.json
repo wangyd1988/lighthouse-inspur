@@ -4,7 +4,7 @@
       "pattern": "^https://github.com/\\S+/\\S+/(issues|pull)/[0-9]+"
     },
     {
-      "pattern": "^https://github.com/submariner-io/lighthouse/workflows/(.*)/badge.svg"
+      "pattern": "^https://github.com/wangyd1988/lighthouse-inspur/workflows/(.*)/badge.svg"
     },
     {
       "pattern": "^http://localhost:"

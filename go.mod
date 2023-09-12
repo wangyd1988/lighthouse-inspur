@@ -1,4 +1,4 @@
-module github.com/submariner-io/lighthouse
+module github.com/wangyd1988/lighthouse-inspur
 
 go 1.19
 
