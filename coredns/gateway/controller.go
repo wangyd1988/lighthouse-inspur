@@ -25,8 +25,8 @@ import (
 	"sync/atomic"
 
 	"github.com/pkg/errors"
-	"github.com/submariner-io/admiral/pkg/log"
-	"github.com/submariner-io/admiral/pkg/workqueue"
+	"github.com/wangyd1988/admiral-inspur/pkg/log"
+	"github.com/wangyd1988/admiral-inspur/pkg/workqueue"
 	v1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"

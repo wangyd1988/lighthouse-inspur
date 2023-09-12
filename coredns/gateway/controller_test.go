@@ -24,8 +24,8 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/submariner-io/admiral/pkg/fake"
-	"github.com/submariner-io/admiral/pkg/log/kzerolog"
+	"github.com/wangyd1988/admiral-inspur/pkg/fake"
+	"github.com/wangyd1988/admiral-inspur/pkg/log/kzerolog"
 	"github.com/submariner-io/lighthouse/coredns/gateway"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"

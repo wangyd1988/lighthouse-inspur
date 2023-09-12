@@ -21,7 +21,7 @@ package loadbalancer
 import (
 	"fmt"
 
-	"github.com/submariner-io/admiral/pkg/log"
+	"github.com/wangyd1988/admiral-inspur/pkg/log"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 )
 

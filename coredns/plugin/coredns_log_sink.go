@@ -23,7 +23,7 @@ import (
 
 	clog "github.com/coredns/coredns/plugin/pkg/log"
 	"github.com/go-logr/logr"
-	loga "github.com/submariner-io/admiral/pkg/log"
+	loga "github.com/wangyd1988/admiral-inspur/pkg/log"
 )
 
 type corednsLogSink struct {

@@ -23,7 +23,7 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/submariner-io/admiral/pkg/log/kzerolog"
+	"github.com/wangyd1988/admiral-inspur/pkg/log/kzerolog"
 )
 
 func init() {

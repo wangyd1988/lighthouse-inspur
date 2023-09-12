@@ -24,8 +24,8 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/submariner-io/admiral/pkg/syncer/test"
-	testutil "github.com/submariner-io/admiral/pkg/test"
+	"github.com/wangyd1988/admiral-inspur/pkg/syncer/test"
+	testutil "github.com/wangyd1988/admiral-inspur/pkg/test"
 	"github.com/submariner-io/lighthouse/pkg/constants"
 	corev1 "k8s.io/api/core/v1"
 	discovery "k8s.io/api/discovery/v1"

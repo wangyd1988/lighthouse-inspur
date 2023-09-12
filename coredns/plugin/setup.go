@@ -26,7 +26,7 @@ import (
 	"github.com/coredns/coredns/core/dnsserver"
 	"github.com/coredns/coredns/plugin"
 	"github.com/pkg/errors"
-	"github.com/submariner-io/admiral/pkg/watcher"
+	"github.com/wangyd1988/admiral-inspur/pkg/watcher"
 	"github.com/submariner-io/lighthouse/coredns/gateway"
 	"github.com/submariner-io/lighthouse/coredns/resolver"
 	discovery "k8s.io/api/discovery/v1"

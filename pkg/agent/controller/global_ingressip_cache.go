@@ -22,7 +22,7 @@ import (
 	"sync"
 
 	"github.com/pkg/errors"
-	"github.com/submariner-io/admiral/pkg/watcher"
+	"github.com/wangyd1988/admiral-inspur/pkg/watcher"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"

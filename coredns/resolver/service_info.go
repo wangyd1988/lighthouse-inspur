@@ -21,7 +21,7 @@ package resolver
 import (
 	"fmt"
 
-	"github.com/submariner-io/admiral/pkg/slices"
+	"github.com/wangyd1988/admiral-inspur/pkg/slices"
 	mcsv1a1 "sigs.k8s.io/mcs-api/pkg/apis/v1alpha1"
 )
 

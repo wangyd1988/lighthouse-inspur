@@ -22,8 +22,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/submariner-io/admiral/pkg/slices"
-	"github.com/submariner-io/admiral/pkg/syncer"
+	"github.com/wangyd1988/admiral-inspur/pkg/slices"
+	"github.com/wangyd1988/admiral-inspur/pkg/syncer"
 	"github.com/submariner-io/lighthouse/pkg/constants"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
