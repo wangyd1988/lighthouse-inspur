@@ -189,7 +189,7 @@ func (c *EndpointSliceController) checkForConflicts(key, name, namespace string)
 
 	if err != nil && !strings.Contains(err.Error(), ErrResourceNotsupported) {
 		return true, errors.Wrapf(err, "error during conflict check for %q", key)
-	} else {
+	} else if err != nil {
 		epsList, err = c.syncer.GetLocalClient().Resource(endpointSliceV1Beta1GVR).Namespace(namespace).List(context.Background(), metav1.ListOptions{
 			LabelSelector: k8slabels.SelectorFromSet(map[string]string{
 				discovery.LabelManagedBy: constants.LabelValueManagedBy,
