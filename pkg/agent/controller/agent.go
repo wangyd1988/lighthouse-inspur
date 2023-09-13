@@ -21,6 +21,7 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"reflect"
 	"strconv"
 
@@ -431,13 +432,17 @@ func (c converter) toEndpointSlice(obj runtime.Object) *discovery.EndpointSlice 
 	to := &discovery.EndpointSlice{}
 
 	utilruntime.HandleError(fmt.Errorf("#toEndpointSlice begin"))
-	toGVK := to.GetObjectKind().GroupVersionKind()
-	utilruntime.HandleError(fmt.Errorf("#toEndpointSlice to object gvr:%v", toGVK))
+	utilruntime.HandleError(fmt.Errorf("#toEndpointSlice to object :%v", to))
+	endpointSliceGVR := schema.GroupVersionKind{
+		Group:    discovery.GroupName,
+		Version:  discovery.SchemeGroupVersion.Version,
+		Kind: "EndpointSlice",
+	}
 
 	object2,_ := obj.(runtime.Unstructured)
 	utilruntime.HandleError(fmt.Errorf("#toEndpointSlice from object gvr:%v", object2.GetObjectKind().GroupVersionKind()))
-	object2.GetObjectKind().SetGroupVersionKind(toGVK)
-	utilruntime.Must(c.scheme.Convert(obj, to, nil))
+	object2.GetObjectKind().SetGroupVersionKind(endpointSliceGVR)
+	utilruntime.Must(c.scheme.Convert(object2, to, nil))
 
 	utilruntime.HandleError(fmt.Errorf("#toEndpointSlice end"))
 	return to
