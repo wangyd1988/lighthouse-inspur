@@ -429,8 +429,17 @@ func (c converter) toServiceExport(obj runtime.Object) *mcsv1a1.ServiceExport {
 
 func (c converter) toEndpointSlice(obj runtime.Object) *discovery.EndpointSlice {
 	to := &discovery.EndpointSlice{}
+
+	utilruntime.HandleError(fmt.Errorf("#toEndpointSlice begin"))
+	toGVK := to.GetObjectKind().GroupVersionKind()
+	utilruntime.HandleError(fmt.Errorf("#toEndpointSlice to object gvr:%v", toGVK))
+
+	object2,_ := obj.(runtime.Unstructured)
+	utilruntime.HandleError(fmt.Errorf("#toEndpointSlice from object gvr:%v", object2.GetObjectKind().GroupVersionKind()))
+	object2.GetObjectKind().SetGroupVersionKind(toGVK)
 	utilruntime.Must(c.scheme.Convert(obj, to, nil))
 
+	utilruntime.HandleError(fmt.Errorf("#toEndpointSlice end"))
 	return to
 }
 
