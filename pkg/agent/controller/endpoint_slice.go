@@ -21,6 +21,7 @@ package controller
 import (
 	"context"
 	"fmt"
+	"k8s.io/apimachinery/pkg/util/version"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -45,10 +46,24 @@ var ErrResourceNotsupported = "could not find the requested resource"
 func newEndpointSliceController(spec *AgentSpecification, syncerConfig broker.SyncerConfig,
 	serviceExportClient *ServiceExportClient,
 ) (*EndpointSliceController, error) {
+
 	c := &EndpointSliceController{
 		clusterID:              spec.ClusterID,
 		serviceExportClient:    serviceExportClient,
 		conflictCheckWorkQueue: workqueue.New("ConflictChecker"),
+	}
+	// 小于v1.21是v1beta1
+	var lessThanversion121 bool = true
+	version121, _ := version.ParseGeneric("v1.21.0")
+	var brokerResourceType  runtime.Object
+	runningVersion, err := version.ParseGeneric(c.syncer.GetBrokerClientVersion())
+
+    if err == nil &&  runningVersion.LessThan(version121){
+		lessThanversion121 = true
+		brokerResourceType = &discoveryv1beta1.EndpointSlice{}
+	} else {
+		lessThanversion121 = false
+		brokerResourceType = &discovery.EndpointSlice{}
 	}
 
 	syncerConfig.LocalNamespace = metav1.NamespaceAll
@@ -62,17 +77,20 @@ func newEndpointSliceController(spec *AgentSpecification, syncerConfig broker.Sy
 			LocalResourceType:     &discovery.EndpointSlice{},
 			LocalTransform:        c.onLocalEndpointSlice,
 			LocalOnSuccessfulSync: c.onLocalEndpointSliceSynced,
-			BrokerResourceType:    &discoveryv1beta1.EndpointSlice{},
+			BrokerResourceType:    brokerResourceType,
 			BrokerTransform:       c.onRemoteEndpointSlice,
 			BrokerOnSuccessfulSync: func(obj runtime.Object, _ syncer.Operation) bool {
+				if lessThanversion121 {
+					c.enqueueForConflictCheckV1beta1(obj.(*discoveryv1beta1.EndpointSlice))
+					return false
+				}
 				c.enqueueForConflictCheck(obj.(*discovery.EndpointSlice))
 				return false
 			},
 		},
 	}
 
-	var err error
-
+	//var err error
 	c.syncer, err = broker.NewSyncer(syncerConfig)
 	if err != nil {
 		syncerConfig.ResourceConfigs = []broker.ResourceConfig{
@@ -84,9 +102,13 @@ func newEndpointSliceController(spec *AgentSpecification, syncerConfig broker.Sy
 				LocalResourceType:     &discovery.EndpointSlice{},
 				LocalTransform:        c.onLocalEndpointSlice,
 				LocalOnSuccessfulSync: c.onLocalEndpointSliceSynced,
-				BrokerResourceType:    &discoveryv1beta1.EndpointSlice{},
+				BrokerResourceType:    brokerResourceType,
 				BrokerTransform:       c.onRemoteEndpointSlice,
 				BrokerOnSuccessfulSync: func(obj runtime.Object, _ syncer.Operation) bool {
+					if lessThanversion121 {
+						c.enqueueForConflictCheckV1beta1(obj.(*discoveryv1beta1.EndpointSlice))
+						return false
+					}
 					c.enqueueForConflictCheck(obj.(*discovery.EndpointSlice))
 					return false
 				},
@@ -241,6 +263,18 @@ func (c *EndpointSliceController) enqueueForConflictCheck(eps *discovery.Endpoin
 	}
 
 	c.conflictCheckWorkQueue.Enqueue(&discovery.EndpointSlice{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      eps.Labels[mcsv1a1.LabelServiceName],
+			Namespace: eps.Labels[constants.LabelSourceNamespace],
+		},
+	})
+}
+func (c *EndpointSliceController) enqueueForConflictCheckV1beta1(eps *discoveryv1beta1.EndpointSlice) {
+	if eps.Labels[constants.LabelIsHeadless] != "false" {
+		return
+	}
+
+	c.conflictCheckWorkQueue.Enqueue(&discoveryv1beta1.EndpointSlice{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      eps.Labels[mcsv1a1.LabelServiceName],
 			Namespace: eps.Labels[constants.LabelSourceNamespace],
