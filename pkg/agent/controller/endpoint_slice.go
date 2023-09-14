@@ -62,7 +62,7 @@ func newEndpointSliceController(spec *AgentSpecification, syncerConfig broker.Sy
 			LocalResourceType:     &discovery.EndpointSlice{},
 			LocalTransform:        c.onLocalEndpointSlice,
 			LocalOnSuccessfulSync: c.onLocalEndpointSliceSynced,
-			BrokerResourceType:    &discovery.EndpointSlice{},
+			BrokerResourceType:    &discoveryv1beta1.EndpointSlice{},
 			BrokerTransform:       c.onRemoteEndpointSlice,
 			BrokerOnSuccessfulSync: func(obj runtime.Object, _ syncer.Operation) bool {
 				c.enqueueForConflictCheck(obj.(*discovery.EndpointSlice))
