@@ -60,7 +60,7 @@ func newEndpointSliceController(spec *AgentSpecification, syncerConfig broker.Sy
 	version121, _ := version.ParseGeneric("v1.21.0")
 	var brokerResourceType runtime.Object
 	brokerResourceType = &discovery.EndpointSlice{}
-	utilruntime.HandleError(fmt.Errorf("#newEndpointSliceController brokerResourceType:%v, err:%s;",brokerResourceType, sysncerErr.Error()))
+	utilruntime.HandleError(fmt.Errorf("#newEndpointSliceController brokerResourceType:%v, BrokerClientVersion:%v,err:%v;",brokerResourceType,syncerConfig.BrokerClientVersion ,sysncerErr))
 	if sysncerErr != nil && len(syncerConfig.BrokerClientVersion) != 0 {
 		runningVersion, err := version.ParseGeneric(syncerConfig.BrokerClientVersion)
 		if err == nil && runningVersion.LessThan(version121) {
