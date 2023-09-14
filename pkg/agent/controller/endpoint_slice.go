@@ -21,6 +21,7 @@ package controller
 import (
 	"context"
 	"fmt"
+	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/apimachinery/pkg/util/version"
 	"strings"
 
@@ -52,18 +53,20 @@ func newEndpointSliceController(spec *AgentSpecification, syncerConfig broker.Sy
 		serviceExportClient:    serviceExportClient,
 		conflictCheckWorkQueue: workqueue.New("ConflictChecker"),
 	}
-	// 小于v1.21是v1beta1
-	var lessThanversion121 bool = true
-	version121, _ := version.ParseGeneric("v1.21.0")
-	var brokerResourceType  runtime.Object
-	runningVersion, err := version.ParseGeneric(c.syncer.GetBrokerClientVersion())
 
-    if err == nil &&  runningVersion.LessThan(version121){
-		lessThanversion121 = true
-		brokerResourceType = &discoveryv1beta1.EndpointSlice{}
-	} else {
-		lessThanversion121 = false
-		brokerResourceType = &discovery.EndpointSlice{}
+	sysncerErr := broker.CreateBrokerClientVersion(&syncerConfig)
+	// 小于v1.21是v1beta1
+	var lessThanversion121 bool = false
+	version121, _ := version.ParseGeneric("v1.21.0")
+	var brokerResourceType runtime.Object
+	brokerResourceType = &discovery.EndpointSlice{}
+	utilruntime.HandleError(fmt.Errorf("#newEndpointSliceController brokerResourceType:%v, err:%s;",brokerResourceType, sysncerErr.Error()))
+	if sysncerErr != nil && len(syncerConfig.BrokerClientVersion) != 0 {
+		runningVersion, err := version.ParseGeneric(syncerConfig.BrokerClientVersion)
+		if err == nil && runningVersion.LessThan(version121) {
+			lessThanversion121 = true
+			brokerResourceType = &discoveryv1beta1.EndpointSlice{}
+		}
 	}
 
 	syncerConfig.LocalNamespace = metav1.NamespaceAll
@@ -89,8 +92,7 @@ func newEndpointSliceController(spec *AgentSpecification, syncerConfig broker.Sy
 			},
 		},
 	}
-
-	//var err error
+	var err error
 	c.syncer, err = broker.NewSyncer(syncerConfig)
 	if err != nil {
 		syncerConfig.ResourceConfigs = []broker.ResourceConfig{
