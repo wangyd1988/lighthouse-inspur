@@ -85,7 +85,7 @@ func newEndpointSliceController(spec *AgentSpecification, syncerConfig broker.Sy
 			LocalTransform:        c.onLocalEndpointSlice,
 			LocalOnSuccessfulSync: c.onLocalEndpointSliceSynced,
 			BrokerResourceType:    brokerResourceType,
-			BrokerTransform:       c.onRemoteEndpointSlice,
+			BrokerTransform:       c.onRemoteEndpointSliceV1beta1,
 			BrokerOnSuccessfulSync: func(obj runtime.Object, _ syncer.Operation) bool {
 				if lessThanversion121 {
 					c.enqueueForConflictCheckV1beta1(obj.(*discoveryv1beta1.EndpointSlice))
@@ -109,7 +109,7 @@ func newEndpointSliceController(spec *AgentSpecification, syncerConfig broker.Sy
 				LocalTransform:        c.onLocalEndpointSlice,
 				LocalOnSuccessfulSync: c.onLocalEndpointSliceSynced,
 				BrokerResourceType:    brokerResourceType,
-				BrokerTransform:       c.onRemoteEndpointSlice,
+				BrokerTransform:       c.onRemoteEndpointSliceV1beta1,
 				BrokerOnSuccessfulSync: func(obj runtime.Object, _ syncer.Operation) bool {
 					if lessThanversion121 {
 						c.enqueueForConflictCheckV1beta1(obj.(*discoveryv1beta1.EndpointSlice))
@@ -173,6 +173,13 @@ func (c *EndpointSliceController) onRemoteEndpointSlice(obj runtime.Object, _ in
 
 	return endpointSlice, false
 }
+func (c *EndpointSliceController) onRemoteEndpointSliceV1beta1(obj runtime.Object, _ int, _ syncer.Operation) (runtime.Object, bool) {
+	endpointSlice := obj.(*discoveryv1beta1.EndpointSlice)
+	endpointSlice.Namespace = endpointSlice.GetObjectMeta().GetLabels()[constants.LabelSourceNamespace]
+
+	return endpointSlice, false
+}
+
 
 func (c *EndpointSliceController) onLocalEndpointSliceSynced(obj runtime.Object, op syncer.Operation) bool {
 	endpointSlice := obj.(*discovery.EndpointSlice)
