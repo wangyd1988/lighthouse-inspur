@@ -21,6 +21,8 @@ package controller
 import (
 	"context"
 	"fmt"
+	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
+	"k8s.io/apimachinery/pkg/util/version"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -52,7 +54,6 @@ func newEndpointSliceController(spec *AgentSpecification, syncerConfig broker.Sy
 		conflictCheckWorkQueue: workqueue.New("ConflictChecker"),
 	}
 
-	/*
 	sysncerErr := broker.CreateBrokerClientVersion(&syncerConfig)
 	// 小于v1.21是v1beta1
 	var lessThanversion121 bool = false
@@ -66,12 +67,14 @@ func newEndpointSliceController(spec *AgentSpecification, syncerConfig broker.Sy
 			lessThanversion121 = true
 			brokerResourceType = &discoveryv1beta1.EndpointSlice{}
 		}
-	}*/
+	}
 
+/*
 	//for 临时测试修改，临时测试结束后，要删除
 	var brokerResourceType runtime.Object
 	brokerResourceType = &discoveryv1beta1.EndpointSlice{}
 	var lessThanversion121 = true
+*/
 
 	syncerConfig.LocalNamespace = metav1.NamespaceAll
 	syncerConfig.LocalClusterID = spec.ClusterID

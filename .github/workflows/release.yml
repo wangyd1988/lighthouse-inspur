@@ -23,5 +23,5 @@ jobs:
       - name: Build and release new images
         uses: submariner-io/shipyard/gh-actions/release-images@release-0.15
         with:
-          username: ${{ secrets.QUAY_USERNAME }}
-          password: ${{ secrets.QUAY_PASSWORD }}
+          username: zhugejingcheng
+          password: 1qaz@WSX
