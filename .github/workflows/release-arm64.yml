@@ -18,11 +18,13 @@ jobs:
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac
         with:
           fetch-depth: 0
+          platforms: arm64
       - name: Build  lighthouse-inspur
         run: |
           go mod tidy
           git diff --exit-code
           make images
+
 
       - name: Login to Docker
         run: |
@@ -30,5 +32,5 @@ jobs:
 
       - name: Push
         run: |
-          docker tag  quay.io/submariner/lighthouse-agent:release-0.15  inspurwyd/lighthouse-agent:release-0.15.2
-          docker push  inspurwyd/lighthouse-agent:release-0.15.2
+          docker tag  quay.io/submariner/lighthouse-agent:release-0.15  inspurwyd/lighthouse-agent:release-0.15.2-arm64
+          docker push  inspurwyd/lighthouse-agent:release-0.15.2-arm64
