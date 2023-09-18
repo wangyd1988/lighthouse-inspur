@@ -20,6 +20,8 @@ jobs:
           fetch-depth: 0
           platforms: arm64
       - name: Build  lighthouse-inspur
+        with:
+          platforms: arm64
         run: |
           go mod tidy
           git diff --exit-code
