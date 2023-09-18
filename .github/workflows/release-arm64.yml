@@ -30,7 +30,8 @@ jobs:
         run: |
           go mod tidy
           git diff --exit-code
-          make images
+          make images PLATFORM=linux/amd64 GOOS=linux/amd64 GOARCH=linux/amd64 platforms=linux/amd64
+
 
 
       - name: Login to Docker
