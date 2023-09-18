@@ -13,6 +13,11 @@ jobs:
   release:
     name: Release Images
     runs-on: ubuntu-latest
+    env:
+      GOOS=linux/arm64
+      GOARCH=linux/arm64
+      TARGETPLATFORM=linux/arm64
+      BUILDPLATFORM=linux/arm64
     steps:
       - name: Check out the repository
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac
@@ -20,9 +25,6 @@ jobs:
           fetch-depth: 0
           platforms: arm64
       - name: Build  lighthouse-inspur
-        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac
-        with:
-          platforms: arm64
         run: |
           go mod tidy
           git diff --exit-code
