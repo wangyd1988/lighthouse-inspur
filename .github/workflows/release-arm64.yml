@@ -20,7 +20,6 @@ jobs:
       BUILDPLATFORM: linux/arm64
       platforms: linux/arm64
       PLATFORM: linux/arm64
-      DAPPER_HOST_ARCH: arm64
     steps:
       - name: Check out the repository
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac
