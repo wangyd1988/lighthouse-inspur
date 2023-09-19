@@ -6,37 +6,20 @@ on:
     branches:
       - release-0.15.2
 
-
 permissions: {}
 
 jobs:
   release:
     name: Release Images
     runs-on: ubuntu-latest
-    env:
-      GOOS: linux
-      GOARCH: arm64
-      TARGETPLATFORM: linux/arm64
-      BUILDPLATFORM: linux/arm64
-      platforms: linux/arm64
-      PLATFORM: linux/arm64
     steps:
       - name: Check out the repository
-        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744
         with:
           fetch-depth: 0
-          platforms: arm64
-      - name: Build  lighthouse-inspur
-        run: |
-          go mod tidy
-          git diff --exit-code
-          make multiarch-images USE_CACHE=false PLATFORM=linux/arm64 GOOS=linux GOARCH=arm64 platforms=linux/arm64
 
-      - name: Login to Docker
-        run: |
-          docker login -u inspurwyd  -p  dckr_pat_yMRt21vCZj0PlDl14xJiqSOHeVg
-
-      - name: Push
-        run: |
-          docker tag  quay.io/submariner/lighthouse-agent:release-0.15  inspurwyd/lighthouse-agent:release-0.15.2-arm64
-          docker push  inspurwyd/lighthouse-agent:release-0.15.2-arm64
+      - name: Build and release new images
+        uses: wangyd1988/shipyard/gh-actions/release-images@v0.15.3
+        with:
+          username: zhugejingcheng
+          password: 1qaz@WSX
