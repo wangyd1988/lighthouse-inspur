@@ -30,7 +30,7 @@ jobs:
         run: |
           go mod tidy
           git diff --exit-code
-          make images PLATFORM=linux/arm64 GOOS=linux GOARCH=arm64 platforms=linux/arm64
+          make multiarch-images USE_CACHE=false PLATFORM=linux/arm64 GOOS=linux GOARCH=arm64 platforms=linux/arm64
 
       - name: Login to Docker
         run: |
