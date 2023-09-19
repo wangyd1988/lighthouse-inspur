@@ -14,12 +14,13 @@ jobs:
     name: Release Images
     runs-on: ubuntu-latest
     env:
-      GOOS: linux/arm64
-      GOARCH: linux/arm64
+      GOOS: linux
+      GOARCH: arm64
       TARGETPLATFORM: linux/arm64
       BUILDPLATFORM: linux/arm64
       platforms: linux/arm64
       PLATFORM: linux/arm64
+      DAPPER_HOST_ARCH: arm64
     steps:
       - name: Check out the repository
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac
@@ -31,8 +32,6 @@ jobs:
           go mod tidy
           git diff --exit-code
           make images PLATFORM=linux/arm64 GOOS=linux GOARCH=arm64 platforms=linux/arm64 DAPPER_HOST_ARCH=arm64
-
-
 
       - name: Login to Docker
         run: |
