@@ -31,7 +31,7 @@ jobs:
         run: |
           go mod tidy
           git diff --exit-code
-          make images PLATFORM=linux/arm64 GOOS=linux GOARCH=arm64 platforms=linux/arm64 DAPPER_HOST_ARCH=arm64
+          make images PLATFORM=linux/arm64 GOOS=linux GOARCH=arm64 platforms=linux/arm64
 
       - name: Login to Docker
         run: |
