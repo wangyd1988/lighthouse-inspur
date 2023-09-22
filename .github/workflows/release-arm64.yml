@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
 
       - name: Build and release new images
-        uses: wangyd1988/shipyard/gh-actions/release-images@v0.15.3
+        uses: wangyd1988/shipyard/gh-actions/release-images@v0.15.4
         with:
           username: zhugejingcheng
           password: 1qaz@WSX
