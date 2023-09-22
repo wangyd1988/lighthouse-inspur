@@ -26,7 +26,7 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	lhframework "github.com/wangyd1988/lighthouse-inspur/test/e2e/framework"
-	"github.com/submariner-io/shipyard/test/e2e/framework"
+	"github.com/wangyd1988/shipyard/test/e2e/framework"
 	corev1 "k8s.io/api/core/v1"
 )
 

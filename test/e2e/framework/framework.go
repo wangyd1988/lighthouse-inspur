@@ -28,7 +28,7 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/wangyd1988/admiral-inspur/pkg/slices"
 	"github.com/wangyd1988/lighthouse-inspur/pkg/constants"
-	"github.com/submariner-io/shipyard/test/e2e/framework"
+	"github.com/wangyd1988/shipyard/test/e2e/framework"
 	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
 	discovery "k8s.io/api/discovery/v1"

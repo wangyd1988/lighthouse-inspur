@@ -10,9 +10,9 @@ require (
 	github.com/onsi/gomega v1.27.10
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.16.0
-	github.com/submariner-io/shipyard v0.15.2
 	github.com/uw-labs/lichen v0.1.7
 	github.com/wangyd1988/admiral-inspur v0.15.25
+	github.com/wangyd1988/shipyard v0.15.4
 	k8s.io/api v0.27.5
 	k8s.io/apimachinery v0.27.5
 	k8s.io/client-go v0.27.5
