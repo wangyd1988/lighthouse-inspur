@@ -17,7 +17,7 @@ The Lighthouse architecture is explained in detail at
 
 ## Contribute
 
-We welcome any contributions. Please refer to the [Development Guide](https://submariner.io/development/) for more details.
+We welcome any contributions. Please refer to the [Development Guide](https://submariner.io/development/) for more detailss.
 
 ## Build and Test
 
