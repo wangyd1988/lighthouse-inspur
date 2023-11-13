@@ -22,7 +22,7 @@ jobs:
         run: |
           go mod tidy
           git diff --exit-code
-          make images
+          make multiarch-images
 
       - name: Login to Docker
         run: |
