@@ -75,7 +75,7 @@ else
 
 Makefile.dapper:
 	@echo Downloading $@
-        @curl -sfLO https://raw.githubusercontent.com/wangyd1988/shipyard/$(BASE_BRANCH)/$@
+        @curl -sfLO https://raw.githubusercontent.com/wangyd1988/shipyard/release-0.15/$@
 
 include Makefile.dapper
 
