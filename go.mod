@@ -12,7 +12,7 @@ require (
 	github.com/prometheus/client_golang v1.16.0
 	github.com/uw-labs/lichen v0.1.7
 	github.com/wangyd1988/admiral-inspur v0.15.25
-	github.com/wangyd1988/shipyard v0.15.4
+	github.com/wangyd1988/shipyard v0.15.6
 	k8s.io/api v0.27.5
 	k8s.io/apimachinery v0.27.5
 	k8s.io/client-go v0.27.5
