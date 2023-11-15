@@ -56,20 +56,20 @@ func newEndpointSliceController(spec *AgentSpecification, syncerConfig broker.Sy
 
 	sysncerErr := broker.CreateBrokerClientVersion(&syncerConfig)
 	// 小于v1.21是v1beta1
-	var lessThanversion121 bool = false
+	var lessThanversion121 bool = true
 	version121, _ := version.ParseGeneric("v1.21.0")
 	var brokerResourceType runtime.Object
-	brokerResourceType = &discovery.EndpointSlice{}
+	brokerResourceType = &discoveryv1beta1.EndpointSlice{}
 	var bokerTransform  syncer.TransformFunc
-	bokerTransform =  c.onRemoteEndpointSlice
+	bokerTransform =  c.onRemoteEndpointSliceV1beta1
 	// c.onRemoteEndpointSliceV1beta1
 	utilruntime.HandleError(fmt.Errorf("#newEndpointSliceController brokerResourceType:%v, BrokerClientVersion:%v,err:%v;",brokerResourceType,syncerConfig.BrokerClientVersion ,sysncerErr))
 	if sysncerErr != nil && len(syncerConfig.BrokerClientVersion) != 0 {
 		runningVersion, err := version.ParseGeneric(syncerConfig.BrokerClientVersion)
-		if err == nil && runningVersion.LessThan(version121) {
-			lessThanversion121 = true
-			brokerResourceType = &discoveryv1beta1.EndpointSlice{}
-			bokerTransform = c.onRemoteEndpointSliceV1beta1
+		if err == nil && !runningVersion.LessThan(version121) {
+			lessThanversion121 = false
+			brokerResourceType = &discovery.EndpointSlice{}
+			bokerTransform = c.onRemoteEndpointSlice
 		}
 	}
 
@@ -116,7 +116,7 @@ func newEndpointSliceController(spec *AgentSpecification, syncerConfig broker.Sy
 				LocalTransform:        c.onLocalEndpointSlice,
 				LocalOnSuccessfulSync: c.onLocalEndpointSliceSynced,
 				BrokerResourceType:    brokerResourceType,
-				BrokerTransform:       c.onRemoteEndpointSliceV1beta1,
+				BrokerTransform:       bokerTransform,
 				BrokerOnSuccessfulSync: func(obj runtime.Object, _ syncer.Operation) bool {
 					if lessThanversion121 {
 						c.enqueueForConflictCheckV1beta1(obj.(*discoveryv1beta1.EndpointSlice))

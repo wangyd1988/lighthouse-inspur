@@ -468,8 +468,8 @@ github.com/ugorji/go v1.1.4/go.mod h1:uQMGLiO92mf5W77hV/PUCpI3pbzQx3CRekS0kk+RGr
 github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8/go.mod h1:VFNgLljTbGfSG7qAOspJ7OScBnGdDN/yBr0sguwnwf0=
 github.com/urfave/cli v1.20.0/go.mod h1:70zkFmudgCuE/ngEzBv17Jvp/497gISqfk5gWijbERA=
 github.com/vektah/gqlparser v1.1.2/go.mod h1:1ycwN7Ij5njmMkPPAOaRFY4rET2Enx7IkVv3vaXspKw=
-github.com/wangyd1988/admiral-inspur v0.15.25 h1:mfLtaiXp4jAS2rg2Ai12ojbdKYAkKKQs5Zug+s7i39E=
-github.com/wangyd1988/admiral-inspur v0.15.25/go.mod h1:NLjG7xjtjwA83sNNNVwac6FpvJQtnjKNGb31uiwR990=
+github.com/wangyd1988/admiral-inspur v0.15.26-0.20231115120135-86c9108eb723 h1:3yHq/qxEQ3tst3ut///GDLt+Xc8HOlW5vKg4z0Hmsgk=
+github.com/wangyd1988/admiral-inspur v0.15.26-0.20231115120135-86c9108eb723/go.mod h1:NLjG7xjtjwA83sNNNVwac6FpvJQtnjKNGb31uiwR990=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 github.com/xordataexchange/crypt v0.0.3-0.20170626215501-b2862e3d0a77/go.mod h1:aYKd//L2LvnjZzWKhF00oedf4jCCReLcmhLdhm1A27Q=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
